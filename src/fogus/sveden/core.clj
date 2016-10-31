@@ -11,9 +11,12 @@
     nil
     str))
 
-(defn ^:private entityify [[head & data]]
+(defn ^:private entityify [headers data]
+  (apply hash-map (interleave headers (map nilify data))))
+
+(defn ^:private tableify [[head & data]]
   (let [headers (map edn/read-string head)]
-    (map #(apply hash-map (interleave headers (map nilify %))) data)))
+    (set (map #(entityify headers %) data))))
 
 
 
@@ -24,6 +27,6 @@
       (doall
        (csv/read-csv in-file))))
 
-  (first (entityify d))
+  (type (tableify d))
 
 )
