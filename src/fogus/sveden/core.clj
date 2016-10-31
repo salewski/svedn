@@ -1,4 +1,4 @@
-(ns sveden.core)
+(ns fogus.sveden.core)
 
 (defn foo
   "I don't do a whole lot."

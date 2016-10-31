@@ -1,4 +1,4 @@
-(defproject sveden "0.1.0-SNAPSHOT"
+(defproject fogus/sveden "0.1.0-SNAPSHOT"
   :description "Tools for working with CSV/EDN hybrid data."
   :url "http://www.github.com/fogus/sveden"
   :license {:name "Eclipse Public License"
