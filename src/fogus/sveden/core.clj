@@ -1,6 +1,13 @@
-(ns fogus.sveden.core)
+(ns fogus.sveden.core
+  (:require [clojure.data.csv :as csv]
+            [clojure.java.io  :as io]))
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+
+(comment
+
+  (with-open [in-file (io/reader "./samples/books.csv")]
+    (doall
+     (csv/read-csv in-file)))
+
+
+)
