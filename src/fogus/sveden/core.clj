@@ -7,9 +7,7 @@
   (read-svedn [this source]))
 
 (defn ^:private nilify [str]
-  (if (empty? str)
-    nil
-    str))
+  (if (empty? str) nil str))
 
 (defn ^:private entityify [headers data]
   (apply hash-map (interleave headers (map nilify data))))
