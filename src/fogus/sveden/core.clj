@@ -3,9 +3,14 @@
             [clojure.java.io  :as io]
             [clojure.edn      :as edn]))
 
+(defprotocol SvednReadn
+  (read-svedn [this source]))
+
 (defn ^:private entityify [[head & data]]
   (let [headers (map edn/read-string head)]
     (map #(apply hash-map (interleave headers %)) data)))
+
+
 
 (comment
 
@@ -14,7 +19,7 @@
       (doall
        (csv/read-csv in-file))))
 
-(entityify d)
+  (first (entityify d))
 
 
 
