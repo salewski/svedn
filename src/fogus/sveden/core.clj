@@ -6,9 +6,14 @@
 (defprotocol SvednReadn
   (read-svedn [this source]))
 
+(defn ^:private nilify [str]
+  (if (empty? str)
+    nil
+    str))
+
 (defn ^:private entityify [[head & data]]
   (let [headers (map edn/read-string head)]
-    (map #(apply hash-map (interleave headers %)) data)))
+    (map #(apply hash-map (interleave headers (map nilify %))) data)))
 
 
 
@@ -20,7 +25,5 @@
        (csv/read-csv in-file))))
 
   (first (entityify d))
-
-
 
 )
