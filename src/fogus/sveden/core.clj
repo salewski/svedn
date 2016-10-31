@@ -9,12 +9,12 @@
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
 
-(defn ^:private entityify [headers data]
+(defn ^:private rowify [headers data]
   (apply hash-map (interleave headers (map nilify data))))
 
 (defn ^:private tableify [[head & data]]
   (let [headers (map edn/read-string head)]
-    (set (map #(entityify headers %) data))))
+    (set (map #(rowify headers %) data))))
 
 
 
