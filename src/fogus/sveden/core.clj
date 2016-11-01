@@ -1,5 +1,6 @@
 (ns fogus.sveden.core
-  (:require [clojure.data.csv :as csv]
+  (:require [fogus.sveden.q   :as query]
+            [clojure.data.csv :as csv]
             [clojure.java.io  :as io]
             [clojure.edn      :as edn]
             [clojure.string   :as string]))
@@ -46,8 +47,6 @@
                          :book/author     read-one-or-many}
                         %))       
        set
-       second)
-
-  (read-one-or-many "#{}")
+       (query/has-multiple :book/author))
 
 )
