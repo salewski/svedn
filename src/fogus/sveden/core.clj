@@ -16,7 +16,13 @@
   (let [headers (map edn/read-string head)]
     (set (map #(rowify headers %) data))))
 
-
+(defn ^:private entityify [transformers thing]
+  (reduce (fn [entity [key fun]]
+            (if-let [val (get entity key)]
+              (update-in entity [key] fun)
+              (dissoc entity key)))
+          thing
+          transformers))
 
 (comment
 
@@ -25,6 +31,14 @@
       (doall
        (csv/read-csv in-file))))
 
-  (type (tableify d))
+  (->> d 
+       tableify
+       first
+       (entityify {:book/genre      edn/read-string
+                   :personal/rating edn/read-string
+                   :personal/genre  edn/read-string})
+       )
+
+  ()
 
 )
