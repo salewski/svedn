@@ -1,7 +1,8 @@
 (ns fogus.sveden.core
   (:require [clojure.data.csv :as csv]
             [clojure.java.io  :as io]
-            [clojure.edn      :as edn]))
+            [clojure.edn      :as edn]
+            [clojure.string   :as string]))
 
 (defprotocol SvednReadn
   (read-svedn [this source]))
@@ -24,6 +25,12 @@
           thing
           transformers))
 
+(defn ^:private read-one-or-many [raw]
+  (let [str (string/trim raw)]
+    (if (= \# (first str))
+      (edn/read-string raw)
+      str)))
+
 (comment
 
   (def d
@@ -33,12 +40,14 @@
 
   (->> d 
        tableify
-       first
-       (entityify {:book/genre      edn/read-string
-                   :personal/rating edn/read-string
-                   :personal/genre  edn/read-string})
-       )
+       (map #(entityify {:book/genre      edn/read-string
+                         :personal/rating edn/read-string
+                         :personal/genre  edn/read-string
+                         :book/author     read-one-or-many}
+                        %))       
+       set
+       second)
 
-  ()
+  (read-one-or-many "#{}")
 
 )
