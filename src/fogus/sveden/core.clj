@@ -37,28 +37,25 @@
     (doall
      (csv/read-csv in-file :separator \, :quote \"))))
 
-(defn ^:private -read-svedn [repr]
+(defn ^:private -read-svedn-impl [repr]
   repr)
 
 (extend-protocol SvednReadn
   String
   (read-svedn [source]
-    (-read-svedn (-read-repr source)))
+    (-read-svedn-impl (-read-repr source)))
 
   java.io.Reader
   (read-svedn [source]
-    (-read-svedn (-read-repr source)))
+    (-read-svedn-impl (-read-repr source)))
 
   java.io.PushbackReader
   (read-svedn [source]
-    (-read-svedn (-read-repr source))))
+    (-read-svedn-impl (-read-repr source))))
 
 (comment
 
-  (def d
-    (with-open [in-file (io/reader "./samples/books.csv")]
-      (doall
-       (csv/read-csv in-file))))
+  (def d (read-svedn "./samples/books.csv"))
 
   (->> d 
        tableify
