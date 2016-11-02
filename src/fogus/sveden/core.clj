@@ -33,7 +33,9 @@
       str)))
 
 (defn ^:private -read-repr [source]
-  )
+  (with-open [file source]
+    (doall
+     (csv/read-csv file :separator \, :quote \"))))
 
 (defn ^:private -read-svedn [repr]
   )
@@ -45,9 +47,7 @@
 
   Reader
   (read-svedn [source]
-    (let [repr (with-open [in-file (io/reader "./samples/books.csv")]
-                 (doall
-                  (csv/read-csv in-file)))])))
+    (let [repr ])))
 
 (comment
 
