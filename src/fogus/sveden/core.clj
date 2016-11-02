@@ -33,9 +33,7 @@
       str)))
 
 (defn ^:private -read-repr [source]
-  (with-open [file source]
-    (doall
-     (csv/read-csv file :separator \, :quote \"))))
+  (csv/read-csv source :separator \, :quote \"))
 
 (defn ^:private -read-svedn [repr]
   )
