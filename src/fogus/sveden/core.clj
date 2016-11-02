@@ -6,7 +6,7 @@
             [clojure.string   :as string]))
 
 (defprotocol SvednReadn
-  (read-svedn [this]))
+  (-read-svedn [this]))
 
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
@@ -42,15 +42,15 @@
 
 (extend-protocol SvednReadn
   String
-  (read-svedn [source]
+  (-read-svedn [source]
     (-read-svedn-impl (-read-repr source)))
 
   java.io.Reader
-  (read-svedn [source]
+  (-read-svedn [source]
     (-read-svedn-impl (-read-repr source)))
 
   java.io.PushbackReader
-  (read-svedn [source]
+  (-read-svedn [source]
     (-read-svedn-impl (-read-repr source))))
 
 (comment
