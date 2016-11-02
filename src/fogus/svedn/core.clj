@@ -3,7 +3,8 @@
             [clojure.data.csv :as csv]
             [clojure.java.io  :as io]
             [clojure.edn      :as edn]
-            [clojure.string   :as string]))
+            [clojure.string   :as string])
+  (:refer-clojure :exclude [read]))
 
 (defprotocol SvednReadn
   (-read-svedn [this header-fn transformers validator]))
@@ -57,17 +58,25 @@
   (-read-svedn [source header-fn transformers validator]
     (-read-svedn-impl header-fn transformers validator (-read-repr source))))
 
+(def ^:private DEFAULT_OPTS {:header-transformer edn/read-string
+                              :validator identity})
 
+(defn read [source & {:as opts}]
+  (let [config (merge DEFAULT_OPTS opts)]
+    (-> source
+        (-read-svedn 
+         (:header-transformer config)
+         (:transformers config)
+         (:validator config)))))
 
 (comment
 
-  (-> "./samples/books.csv"
-      (-read-svedn edn/read-string
-                   {:book/genre      edn/read-string
-                    :personal/rating edn/read-string
-                    :personal/genre  edn/read-string
-                    :book/author     read-one-or-many}
-                   identity) 
-      (->> (query/has-multiple :book/author)))
-
+  (->> (read "./samples/books.csv"
+             :transformers          
+             {:book/genre      edn/read-string
+              :personal/rating edn/read-string
+              :personal/genre  edn/read-string
+              :book/author     read-one-or-many})
+       (query/has-multiple :book/author))
+        
 )
