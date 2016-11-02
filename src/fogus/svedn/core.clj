@@ -58,11 +58,11 @@
 
 (comment
 
-
   (-> "./samples/books.csv"
       (-read-svedn {:book/genre      edn/read-string
                     :personal/rating edn/read-string
                     :personal/genre  edn/read-string
                     :book/author     read-one-or-many}) 
       (->> (query/has-multiple :book/author)))
+
 )
