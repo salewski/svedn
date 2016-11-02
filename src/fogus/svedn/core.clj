@@ -1,5 +1,5 @@
-(ns fogus.sveden.core
-  (:require [fogus.sveden.q   :as query]
+(ns fogus.svedn.core
+  (:require [fogus.svedn.q   :as query]
             [clojure.data.csv :as csv]
             [clojure.java.io  :as io]
             [clojure.edn      :as edn]

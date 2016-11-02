@@ -1,6 +1,6 @@
-(ns sveden.core-test
+(ns svedn.core-test
   (:require [clojure.test :refer :all]
-            [sveden.core :refer :all]))
+            [svedn.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."
