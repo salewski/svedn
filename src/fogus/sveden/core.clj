@@ -6,7 +6,7 @@
             [clojure.string   :as string]))
 
 (defprotocol SvednReadn
-  (read-svedn [this source]))
+  (read-svedn [this]))
 
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
@@ -31,6 +31,23 @@
     (if (= \# (first str))
       (edn/read-string raw)
       str)))
+
+(defn ^:private -read-repr [source]
+  )
+
+(defn ^:private -read-svedn [repr]
+  )
+
+(extend-protocol SvednReadn
+  String
+  (read-svedn [source]
+    (-read-svedn (csv/read-csv source :separator \, :quote \")))
+
+  Reader
+  (read-svedn [source]
+    (let [repr (with-open [in-file (io/reader "./samples/books.csv")]
+                 (doall
+                  (csv/read-csv in-file)))])))
 
 (comment
 
