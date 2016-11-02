@@ -6,7 +6,7 @@
             [clojure.string   :as string]))
 
 (defprotocol SvednReadn
-  (-read-svedn [this]))
+  (-read-svedn [this transformers]))
 
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
@@ -37,34 +37,32 @@
     (doall
      (csv/read-csv in-file :separator \, :quote \"))))
 
-(defn ^:private -read-svedn-impl [repr]
-  repr)
+(defn ^:private -read-svedn-impl [transformers repr]
+  (->> repr 
+       tableify
+       (map #(entityify transformers %))       
+       set))
 
 (extend-protocol SvednReadn
   String
-  (-read-svedn [source]
-    (-read-svedn-impl (-read-repr source)))
+  (-read-svedn [source transformers]
+    (-read-svedn-impl transformers (-read-repr source)))
 
   java.io.Reader
-  (-read-svedn [source]
-    (-read-svedn-impl (-read-repr source)))
+  (-read-svedn [source transformers]
+    (-read-svedn-impl transformers (-read-repr source)))
 
   java.io.PushbackReader
-  (-read-svedn [source]
-    (-read-svedn-impl (-read-repr source))))
+  (-read-svedn [source transformers]
+    (-read-svedn-impl transformers (-read-repr source))))
 
 (comment
 
-  (def d (read-svedn "./samples/books.csv"))
 
-  (->> d 
-       tableify
-       (map #(entityify {:book/genre      edn/read-string
-                         :personal/rating edn/read-string
-                         :personal/genre  edn/read-string
-                         :book/author     read-one-or-many}
-                        %))       
-       set
-       (query/has-multiple :book/author))
-
+  (-> "./samples/books.csv"
+      (-read-svedn {:book/genre      edn/read-string
+                    :personal/rating edn/read-string
+                    :personal/genre  edn/read-string
+                    :book/author     read-one-or-many}) 
+      (->> (query/has-multiple :book/author)))
 )
