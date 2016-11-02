@@ -33,19 +33,25 @@
       str)))
 
 (defn ^:private -read-repr [source]
-  (csv/read-csv source :separator \, :quote \"))
+  (with-open [in-file (io/reader source)]
+    (doall
+     (csv/read-csv in-file :separator \, :quote \"))))
 
 (defn ^:private -read-svedn [repr]
-  )
+  repr)
 
 (extend-protocol SvednReadn
   String
   (read-svedn [source]
-    (-read-svedn (csv/read-csv source :separator \, :quote \")))
+    (-read-svedn (-read-repr source)))
 
-  Reader
+  java.io.Reader
   (read-svedn [source]
-    (let [repr ])))
+    (-read-svedn (-read-repr source)))
+
+  java.io.PushbackReader
+  (read-svedn [source]
+    (-read-svedn (-read-repr source))))
 
 (comment
 
