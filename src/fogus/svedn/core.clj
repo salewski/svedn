@@ -6,7 +6,7 @@
             [clojure.string   :as string]))
 
 (defprotocol SvednReadn
-  (-read-svedn [this transformers]))
+  (-read-svedn [this header-fn transformers]))
 
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
@@ -14,8 +14,8 @@
 (defn ^:private rowify [headers data]
   (apply hash-map (interleave headers (map nilify data))))
 
-(defn ^:private tableify [[head & data]]
-  (let [headers (map edn/read-string head)]
+(defn ^:private tableify [header-transformer [head & data]]
+  (let [headers (map header-transformer head)]
     (set (map #(rowify headers %) data))))
 
 (defn ^:private entityify [transformers thing]
@@ -37,29 +37,32 @@
     (doall
      (csv/read-csv in-file :separator \, :quote \"))))
 
-(defn ^:private -read-svedn-impl [transformers repr]
+(defn ^:private -read-svedn-impl [header-fn transformers repr]
   (->> repr 
-       tableify
+       (tableify header-fn)
        (map #(entityify transformers %))       
        set))
 
 (extend-protocol SvednReadn
   String
-  (-read-svedn [source transformers]
-    (-read-svedn-impl transformers (-read-repr source)))
+  (-read-svedn [source header-fn transformers]
+    (-read-svedn-impl header-fn transformers (-read-repr source)))
 
   java.io.Reader
-  (-read-svedn [source transformers]
-    (-read-svedn-impl transformers (-read-repr source)))
+  (-read-svedn [source header-fn transformers]
+    (-read-svedn-impl header-fn transformers (-read-repr source)))
 
   java.io.PushbackReader
-  (-read-svedn [source transformers]
-    (-read-svedn-impl transformers (-read-repr source))))
+  (-read-svedn [source header-fn transformers]
+    (-read-svedn-impl header-fn transformers (-read-repr source))))
+
+
 
 (comment
 
   (-> "./samples/books.csv"
-      (-read-svedn {:book/genre      edn/read-string
+      (-read-svedn edn/read-string
+                   {:book/genre      edn/read-string
                     :personal/rating edn/read-string
                     :personal/genre  edn/read-string
                     :book/author     read-one-or-many}) 
