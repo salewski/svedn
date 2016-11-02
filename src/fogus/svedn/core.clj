@@ -6,7 +6,7 @@
             [clojure.string   :as string]))
 
 (defprotocol SvednReadn
-  (-read-svedn [this header-fn transformers]))
+  (-read-svedn [this header-fn transformers validator]))
 
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
@@ -37,24 +37,25 @@
     (doall
      (csv/read-csv in-file :separator \, :quote \"))))
 
-(defn ^:private -read-svedn-impl [header-fn transformers repr]
-  (->> repr 
-       (tableify header-fn)
-       (map #(entityify transformers %))       
-       set))
+(defn ^:private -read-svedn-impl [header-fn transformers validator repr]
+  (let [result (->> repr 
+                    (tableify header-fn)
+                    (map #(entityify transformers %))       
+                    set)]
+    (validator result)))
 
 (extend-protocol SvednReadn
   String
-  (-read-svedn [source header-fn transformers]
-    (-read-svedn-impl header-fn transformers (-read-repr source)))
+  (-read-svedn [source header-fn transformers validator]
+    (-read-svedn-impl header-fn transformers validator (-read-repr source)))
 
   java.io.Reader
-  (-read-svedn [source header-fn transformers]
-    (-read-svedn-impl header-fn transformers (-read-repr source)))
+  (-read-svedn [source header-fn transformers validator]
+    (-read-svedn-impl header-fn transformers validator (-read-repr source)))
 
   java.io.PushbackReader
-  (-read-svedn [source header-fn transformers]
-    (-read-svedn-impl header-fn transformers (-read-repr source))))
+  (-read-svedn [source header-fn transformers validator]
+    (-read-svedn-impl header-fn transformers validator (-read-repr source))))
 
 
 
@@ -65,7 +66,8 @@
                    {:book/genre      edn/read-string
                     :personal/rating edn/read-string
                     :personal/genre  edn/read-string
-                    :book/author     read-one-or-many}) 
+                    :book/author     read-one-or-many}
+                   identity) 
       (->> (query/has-multiple :book/author)))
 
 )
