@@ -72,9 +72,9 @@
              {:book/genre      edn/read-string
               :personal/rating edn/read-string
               :personal/genre  edn/read-string
-              :book/author     specs/one-or-many})
+              :book/author     specs/parse-one-or-many})
        (query/has-multiple :book/author))
 
-  (s/conform :fogus.svedn.specs/one-or-many "#{1 2}")
-  (s/describe (s/coll-of string? :kind set?))
+  (s/conform (specs/one-or-many int?) "#{1 2}")
+
 )
