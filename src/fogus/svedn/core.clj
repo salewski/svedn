@@ -1,10 +1,11 @@
 (ns fogus.svedn.core
-  (:require [fogus.svedn.q   :as query]
-            [clojure.data.csv :as csv]
-            [clojure.java.io  :as io]
-            [clojure.edn      :as edn]
-            [clojure.string   :as string]
-            [clojure.spec     :as s])
+  (:require [fogus.svedn.q     :as query]
+            [fogus.svedn.parse :as parse]
+            [clojure.data.csv  :as csv]
+            [clojure.java.io   :as io]
+            [clojure.edn       :as edn]
+            [clojure.string    :as string]
+            [clojure.spec      :as s])
   (:refer-clojure :exclude [read]))
 
 (defprotocol SvednReadn
@@ -27,12 +28,6 @@
               (dissoc entity key)))
           thing
           transformers))
-
-(defn ^:private read-one-or-many [raw]
-  (let [str (string/trim raw)]
-    (if (= \# (first str))
-      (edn/read-string raw)
-      str)))
 
 (defn ^:private -read-repr [source]
   (with-open [in-file (io/reader source)]
@@ -77,7 +72,7 @@
              {:book/genre      edn/read-string
               :personal/rating edn/read-string
               :personal/genre  edn/read-string
-              :book/author     read-one-or-many})
+              :book/author     parse/one-or-many})
        (query/has-multiple :book/author))
 
   (s/describe (s/coll-of string? :kind set?))
