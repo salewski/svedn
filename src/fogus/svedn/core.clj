@@ -1,6 +1,6 @@
 (ns fogus.svedn.core
   (:require [fogus.svedn.q     :as query]
-            [fogus.svedn.parse :as parse]
+            [fogus.svedn.specs :as specs]
             [clojure.data.csv  :as csv]
             [clojure.java.io   :as io]
             [clojure.edn       :as edn]
@@ -72,8 +72,9 @@
              {:book/genre      edn/read-string
               :personal/rating edn/read-string
               :personal/genre  edn/read-string
-              :book/author     parse/one-or-many})
+              :book/author     specs/one-or-many})
        (query/has-multiple :book/author))
 
+  (s/conform :fogus.svedn.specs/one-or-many "#{1 2}")
   (s/describe (s/coll-of string? :kind set?))
 )
