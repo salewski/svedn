@@ -75,6 +75,6 @@
               :book/author     specs/parse-one-or-many})
        (query/has-multiple :book/author))
 
-  (s/conform (specs/one-or-many int?) "#{1 2}")
+  (s/conform (specs/one-or-many keyword?) "#{:a :b}")
 
 )
