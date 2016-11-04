@@ -3,7 +3,8 @@
             [clojure.data.csv :as csv]
             [clojure.java.io  :as io]
             [clojure.edn      :as edn]
-            [clojure.string   :as string])
+            [clojure.string   :as string]
+            [clojure.spec     :as s])
   (:refer-clojure :exclude [read]))
 
 (defprotocol SvednReadn
@@ -78,5 +79,6 @@
               :personal/genre  edn/read-string
               :book/author     read-one-or-many})
        (query/has-multiple :book/author))
-        
+
+  (s/describe (s/coll-of string? :kind set?))
 )
