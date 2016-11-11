@@ -23,6 +23,7 @@
                #{}
                entry)))
 
+;; TODO: make a 3-arity version that takes a key also
 (defn on-value [val table]
   (->> (seq table)
        (map (keys-with-val val))
