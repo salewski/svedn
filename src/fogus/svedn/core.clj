@@ -22,9 +22,10 @@
     (set (map #(rowify headers %) data))))
 
 (defn ^:private entityify [conformers thing]
-  (reduce (fn [entity [key fun]]
+  (reduce (fn [entity [key confrm]]
+            (println [key confrm])
             (if-let [val (get entity key)]
-              (update-in entity [key] fun)
+              (update-in entity [key] #(s/conform confrm %))
               (dissoc entity key)))
           thing
           conformers))
@@ -69,12 +70,18 @@
 
   (->> (read "./samples/books.csv"
              :conformers          
-             {:book/genre      edn/read-string
-              :personal/rating edn/read-string
-              :personal/genre  edn/read-string
-              :book/author     specs/parse-one-or-many})
-       (query/has-multiple :book/author))
+             {:book/genre      specs/enumeration?
+              :personal/rating number?
+              :personal/genre  specs/enumeration?
+              :book/author     (specs/one-or-more string?)})
+       ;;(query/has-multiple :book/author)
+       )
 
-  (s/conform (specs/one-or-many (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
+  (s/conform (specs/one-or-more (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
 
+  (s/conform (specs/one-or-more specs/enumeration?) "#{:a/b :b/c}")
+
+  (s/conform specs/enumeration? :a/b)
+
+  (s/conform number? 4)
 )

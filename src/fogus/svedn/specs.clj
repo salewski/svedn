@@ -12,12 +12,23 @@
         #{(edn/read-string str)}))
     #{}))
 
-(defmacro one-or-many [typer]
+(defmacro one-or-more [typer]
   `(s/conformer (fn [raw#]
                   (let [things# (parse-one-or-many raw#)
                         cspec#  (s/coll-of ~typer :kind set?)]
                     (s/conform cspec# things#)))))
 
+(def enumeration? (s/conformer (fn [raw]
+                                 (let [enum (if (string? raw) (edn/read-string raw) raw)
+                                       val (s/conform keyword? enum)]
+                                   (if (= :clojure.spec/invalid val)
+                                     val
+                                     (if (and (name val) (namespace val))
+                                       val
+                                       :clojure.spec/invalid))))))
+
 (comment
-  (s/conform (one-or-many int?) "1")
+  (s/conform (one-or-more int?) ":a")
+
+  (s/conform enumeration? ":a.c/b")
 )
