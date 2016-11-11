@@ -74,8 +74,7 @@
               :personal/rating number?
               :personal/genre  specs/enumeration?
               :book/author     (specs/one-or-more string?)})
-       ;;(query/has-multiple :book/author)
-       )
+       (query/has-multiple :book/author))
 
   (s/conform (specs/one-or-more (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
 
