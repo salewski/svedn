@@ -9,7 +9,7 @@
   (:refer-clojure :exclude [read]))
 
 (defprotocol SvednReadn
-  (-read-svedn [this header-fn transformers validator]))
+  (-read-svedn [this header-fn conformers validator]))
 
 (defn ^:private nilify [str]
   (if (empty? str) nil str))
@@ -21,38 +21,38 @@
   (let [headers (map header-transformer head)]
     (set (map #(rowify headers %) data))))
 
-(defn ^:private entityify [transformers thing]
+(defn ^:private entityify [conformers thing]
   (reduce (fn [entity [key fun]]
             (if-let [val (get entity key)]
               (update-in entity [key] fun)
               (dissoc entity key)))
           thing
-          transformers))
+          conformers))
 
 (defn ^:private -read-repr [source]
   (with-open [in-file (io/reader source)]
     (doall
      (csv/read-csv in-file :separator \, :quote \"))))
 
-(defn ^:private -read-svedn-impl [header-fn transformers validator repr]
+(defn ^:private -read-svedn-impl [header-fn conformers validator repr]
   (let [result (->> repr 
                     (tableify header-fn)
-                    (map #(entityify transformers %))       
+                    (map #(entityify conformers %))       
                     set)]
     (validator result)))
 
 (extend-protocol SvednReadn
   String
-  (-read-svedn [source header-fn transformers validator]
-    (-read-svedn-impl header-fn transformers validator (-read-repr source)))
+  (-read-svedn [source header-fn conformers validator]
+    (-read-svedn-impl header-fn conformers validator (-read-repr source)))
 
   java.io.Reader
-  (-read-svedn [source header-fn transformers validator]
-    (-read-svedn-impl header-fn transformers validator (-read-repr source)))
+  (-read-svedn [source header-fn conformers validator]
+    (-read-svedn-impl header-fn conformers validator (-read-repr source)))
 
   java.io.PushbackReader
-  (-read-svedn [source header-fn transformers validator]
-    (-read-svedn-impl header-fn transformers validator (-read-repr source))))
+  (-read-svedn [source header-fn conformers validator]
+    (-read-svedn-impl header-fn conformers validator (-read-repr source))))
 
 (def ^:private DEFAULT_OPTS {:header-transformer edn/read-string
                               :validator identity})
@@ -62,19 +62,19 @@
     (-> source
         (-read-svedn 
          (:header-transformer config)
-         (:transformers config)
+         (:conformers config)
          (:validator config)))))
 
 (comment
 
   (->> (read "./samples/books.csv"
-             :transformers          
+             :conformers          
              {:book/genre      edn/read-string
               :personal/rating edn/read-string
               :personal/genre  edn/read-string
               :book/author     specs/parse-one-or-many})
        (query/has-multiple :book/author))
 
-  (s/conform (specs/one-or-many keyword?) "#{:a :b}")
+  (s/conform (specs/one-or-many (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
 
 )
