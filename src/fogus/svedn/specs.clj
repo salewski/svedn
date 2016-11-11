@@ -19,7 +19,7 @@
                         cspec#  (s/coll-of ~typer :kind set?)]
                     (s/conform cspec# things#)))))
 
-(def enumeration? (s/conformer (fn [raw]
+(def enumeration (s/conformer (fn [raw]
                                  (let [enum (if (string? raw) (edn/read-string raw) raw)
                                        val (s/conform keyword? enum)]
                                    (if (= :clojure.spec/invalid val)
@@ -32,6 +32,11 @@
   `(s/conformer (fn [raw#]
                   (let [thing# (if (string? raw#) (edn/read-string raw#) raw#)]
                     (s/conform (s/and number? ~typer) thing#)))))
+
+(def numeric
+  (s/conformer (fn [raw]
+                 (let [thing (if (string? raw) (edn/read-string raw) raw)]
+                   (s/conform number? thing)))))
 
 (comment
   (parse-one-or-many "a")

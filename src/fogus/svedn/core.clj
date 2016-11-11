@@ -70,17 +70,17 @@
 
   (->> (read "./samples/books.csv"
              :conformers          
-             {:book/genre      specs/enumeration?
-              :personal/rating number?
-              :personal/genre  specs/enumeration?
+             {:book/genre      specs/enumeration
+              :personal/rating specs/numeric
+              :personal/genre  specs/enumeration
               :book/author     (specs/one-or-more string?)})
        (query/has-multiple :book/author))
 
   (->> (read "./samples/books.csv"
              :conformers          
-             {:book/genre      specs/enumeration?
-              :personal/rating (specs/numeric-of number?)
-              :personal/genre  specs/enumeration?
+             {:book/genre      specs/enumeration
+              :personal/rating specs/numeric
+              :personal/genre  specs/enumeration
               :book/author     (specs/one-or-more string?)})
        (query/has-invalid :personal/rating))
 
