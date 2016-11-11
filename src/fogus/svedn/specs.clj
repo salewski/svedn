@@ -3,14 +3,15 @@
             [clojure.edn      :as edn]
             [clojure.spec     :as s]))
 
-;; TODO: This is fragile
 (defn parse-one-or-many [raw]
   (if (string? raw)
-    (let [str (string/trim raw)]
-      (if (= \# (first str))
-        (edn/read-string raw)
-        #{(edn/read-string str)}))
-    #{}))
+    (let [str (string/trim raw)
+          val (edn/read-string str)]
+      (if (set? val)
+        val
+        (if (symbol? val)
+          #{str}
+          #{val})))))
 
 (defmacro one-or-more [typer]
   `(s/conformer (fn [raw#]
@@ -28,7 +29,9 @@
                                        :clojure.spec/invalid))))))
 
 (comment
-  (s/conform (one-or-more int?) ":a")
+  (parse-one-or-many "a")
+
+  (s/conform (one-or-more string?) "a")
 
   (s/conform enumeration? ":a.c/b")
 )
