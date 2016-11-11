@@ -7,8 +7,28 @@
                                (< 1 (count cell)))))
                       table))
 
-(defn has-invalid [key table]
-  (clojure.set/select (fn [entity] 
-                        (let [cell (get entity key)] 
-                          (= :clojure.spec/invalid cell)))
-                      table))
+(defn has-invalid 
+  [key table]
+   (clojure.set/select (fn [entity] 
+                         (let [cell (get entity key)] 
+                           (= :clojure.spec/invalid cell)))
+                       table))
+
+(defn ^:private keys-with-val [val]
+  (fn [entry]
+    (reduce-kv (fn [acc k v]
+                 (if (= v val)
+                   (conj acc k)
+                   acc))
+               #{}
+               entry)))
+
+(defn on-value [val table]
+  (->> (seq table)
+       (map (keys-with-val val))
+       (map (fn [entry ks]
+              (when (seq ks) entry)) 
+            table)
+       (filter identity)
+       set))
+
