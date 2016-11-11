@@ -28,10 +28,19 @@
                                        val
                                        :clojure.spec/invalid))))))
 
+(defmacro numeric-of [typer]
+  `(s/conformer (fn [raw#]
+                  (let [thing# (if (string? raw#) (edn/read-string raw#) raw#)]
+                    (s/conform (s/and number? ~typer) thing#)))))
+
 (comment
   (parse-one-or-many "a")
 
   (s/conform (one-or-more string?) "a")
 
   (s/conform enumeration? ":a.c/b")
+
+  (s/conform (s/or :int int? :ratio ratio?) 1/2)
+
+  (s/conform (numeric-of float?) 2.1)
 )

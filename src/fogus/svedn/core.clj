@@ -76,11 +76,21 @@
               :book/author     (specs/one-or-more string?)})
        (query/has-multiple :book/author))
 
+  (->> (read "./samples/books.csv"
+             :conformers          
+             {:book/genre      specs/enumeration?
+              :personal/rating (specs/numeric-of number?)
+              :personal/genre  specs/enumeration?
+              :book/author     (specs/one-or-more string?)})
+       (query/has-invalid :personal/rating))
+
   (s/conform (specs/one-or-more (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
 
   (s/conform (specs/one-or-more specs/enumeration?) "#{:a/b :b/c}")
 
   (s/conform specs/enumeration? :a/b)
 
-  (s/conform number? 4)
+  (s/conform number? 10)
+
+  ()
 )
