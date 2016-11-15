@@ -82,7 +82,7 @@
               :personal/rating specs/numeric
               :personal/genre  specs/enumeration
               :book/author     (specs/one-or-more string?)})
-       (query/on #(= % :book.genre/fiction.horror)))
+       (query/on-value (query/partial-enum :fiction.philosophy)))
 
   (s/conform (specs/one-or-more (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
 

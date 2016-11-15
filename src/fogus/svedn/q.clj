@@ -23,8 +23,15 @@
                #{}
                entry)))
 
+;; TODO: This isn't exactly what I want, but it'll do for now.
+(defn partial-enum [sub-enum]
+  (fn [enum]
+    (let [pstr (.substring (str sub-enum) 1)
+          estr (.substring (str enum) 1)]
+      (.contains estr pstr))))
+
 ;; TODO: make a 3-arity version that takes a key also
-(defn on [f table]
+(defn on-value [f table]
   (->> (seq table)
        (map (keys-on-fn f))
        (map (fn [entry ks]
@@ -33,3 +40,9 @@
        (filter identity)
        set))
 
+(comment
+
+  ((partial-enum :a/b) :a/bad)
+
+
+)
