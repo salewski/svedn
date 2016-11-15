@@ -14,19 +14,19 @@
                            (= :clojure.spec/invalid cell)))
                        table))
 
-(defn ^:private keys-with-val [val]
+(defn ^:private keys-on-fn [f]
   (fn [entry]
     (reduce-kv (fn [acc k v]
-                 (if (= v val)
+                 (if (f v)
                    (conj acc k)
                    acc))
                #{}
                entry)))
 
 ;; TODO: make a 3-arity version that takes a key also
-(defn on-value [val table]
+(defn on [f table]
   (->> (seq table)
-       (map (keys-with-val val))
+       (map (keys-on-fn f))
        (map (fn [entry ks]
               (when (seq ks) entry)) 
             table)
