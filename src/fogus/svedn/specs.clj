@@ -38,12 +38,20 @@
                  (let [thing (if (string? raw) (edn/read-string raw) raw)]
                    (s/conform number? thing)))))
 
+(defn required [conf]
+  (s/conformer (fn [thing]
+                 (println thing)
+                 (let [val (s/conform conf thing)]
+                   (if (and (not= :clojure.spec/invalid val) (empty? val))
+                     :clojure.spec/invalid
+                     val)))))
+
 (comment
   (parse-one-or-many "a")
 
-  (s/conform (one-or-more string?) "a")
+  (s/conform (required (one-or-more string?)) "#{}")
 
-  (s/conform enumeration? ":a.c/b")
+  (s/conform enumeration ":a.c/b")
 
   (s/conform (s/or :int int? :ratio ratio?) 1/2)
 

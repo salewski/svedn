@@ -1,7 +1,7 @@
 :book/title,:book/genre,:personal/rating,:personal/genre,:book/author
 House of Leaves,:book.genre/fiction.horror,10,,Mark Z. Danielewski
 The Glass Bead Game,:book.genre/fiction.philosophy,10,,Hermann Hesse
-Grendel,:book.genre/fiction,10,,John Gardner
+Grendel,:book.genre/fiction,10,,
 LISP 1.5 Programmer's Manual,:book.genre/non-fiction.programming,10,,"#{""John McCarthy"", ""Paul W. Abrahams"", ""Daniel J. Edwards"", ""Timothy P. Hart"",  ""Michael I. Levin""}"
 Transmetropolitan,:book.genre/fiction.graphic-novel,9.5,,Warren Ellis
 Things Fall Apart,:book.genre/fiction.philosophy,9.8,,Chinua Achebe

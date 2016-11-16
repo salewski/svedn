@@ -81,14 +81,17 @@
              {:book/genre      specs/enumeration
               :personal/rating specs/numeric
               :personal/genre  specs/enumeration
-              :book/author     (specs/one-or-more string?)})
-       (query/on-value (query/partial-enum :fiction.philosophy)))
+              :book/author     (specs/required (specs/one-or-more string?))})
+       ;;(query/on-value (query/partial-enum :fiction.philosophy))
+       (query/on-value #(= % "Grendel"))
+       ;;(query/on-value #(= % :clojure.spec/invalid))
+  )
 
   (s/conform (specs/one-or-more (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
 
   (s/conform (specs/one-or-more specs/enumeration?) "#{:a/b :b/c}")
 
-  (s/conform specs/enumeration? :a/b)
+  (s/conform specs/enumeration :a/b)
 
   (s/conform number? 10)
 
