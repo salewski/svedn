@@ -16,7 +16,6 @@
 
 (defn ^:private keys-on-fn [f]
   (fn [entry]
-    (println entry)
     (reduce-kv (fn [acc k v]
                  (if (f v)
                    (conj acc k)
@@ -32,10 +31,16 @@
             estr (.substring (str enum) 1)]
         (.contains estr pstr)))))
 
+(defn ^:private maybe-set [f]
+  (fn [v]
+    (if (instance? java.util.Set v)
+      (reduce #(or %1 (f %2)) false v)
+      (f v))))
+
 ;; TODO: make a 3-arity version that takes a key also
 (defn on-value [f table]
   (->> (seq table)
-       (map (keys-on-fn f))
+       (map (keys-on-fn (maybe-set f)))
        (map (fn [entry ks]
               (when (seq ks) entry)) 
             table)
@@ -43,7 +48,6 @@
        set))
 
 (comment
-
   ((partial-enum :a.b) :a/a.b)
 
 

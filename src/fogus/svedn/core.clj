@@ -103,7 +103,7 @@
               :game/tag        (specs/one-or-more specs/enumeration)
               :game/designer   (specs/required (specs/one-or-more string?))})
        ;;(query/on-value (query/partial-enum :helicopter))
-       (query/on-value #(= % "Uwe Rosenberg"))
+       (query/on-value #(= % "Quantum"))
        ;;(query/on-value #(= % :clojure.spec/invalid))
   )
 )
