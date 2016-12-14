@@ -82,8 +82,8 @@
               :personal/rating specs/numeric
               :personal/genre  specs/enumeration
               :book/author     (specs/required (specs/one-or-more string?))})
-       ;;(query/on-value (query/partial-enum :fiction.philosophy))
-       (query/on-value #(= % "Grendel"))
+       (query/on-value (query/partial-enum :fiction.philosophy))
+       ;;(query/on-value #(= % "Grendel"))
        ;;(query/on-value #(= % :clojure.spec/invalid))
   )
 
@@ -95,5 +95,15 @@
 
   (s/conform number? 10)
 
-  ()
+  (->> (read "./samples/euros.csv"
+             :conformers          
+             {:game/category   specs/enumeration
+              :published/year  specs/numeric
+              :bgg/id          specs/numeric
+              :game/tag        (specs/one-or-more specs/enumeration)
+              :game/designer   (specs/required (specs/one-or-more string?))})
+       ;;(query/on-value (query/partial-enum :helicopter))
+       (query/on-value #(= % "Uwe Rosenberg"))
+       ;;(query/on-value #(= % :clojure.spec/invalid))
+  )
 )

@@ -16,6 +16,7 @@
 
 (defn ^:private keys-on-fn [f]
   (fn [entry]
+    (println entry)
     (reduce-kv (fn [acc k v]
                  (if (f v)
                    (conj acc k)
@@ -26,9 +27,10 @@
 ;; TODO: This isn't exactly what I want, but it'll do for now.
 (defn partial-enum [sub-enum]
   (fn [enum]
-    (let [pstr (.substring (str sub-enum) 1)
-          estr (.substring (str enum) 1)]
-      (.contains estr pstr))))
+    (when enum
+      (let [pstr (.substring (str sub-enum) 1)
+            estr (.substring (str enum) 1)]
+        (.contains estr pstr)))))
 
 ;; TODO: make a 3-arity version that takes a key also
 (defn on-value [f table]
@@ -42,7 +44,7 @@
 
 (comment
 
-  ((partial-enum :a/b) :a/bad)
+  ((partial-enum :a.b) :a/a.b)
 
 
 )
