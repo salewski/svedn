@@ -46,10 +46,6 @@
                      val)))))
 
 (comment
-  (parse-one-or-many "a")
-
-  (s/conform (required (set-of string?)) "#{}")
-
   (s/conform enumeration ":a.c/b")
 
   (s/conform (s/or :int int? :ratio ratio?) 1/2)
