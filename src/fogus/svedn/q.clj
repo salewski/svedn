@@ -37,18 +37,15 @@
       (reduce #(or %1 (f %2)) false v)
       (f v))))
 
-;; TODO: make a 3-arity version that takes a key also
-(defn on-value [f table]
-  (->> (seq table)
-       (map (keys-on-fn (maybe-set f)))
-       (map (fn [entry ks]
-              (when (seq ks) entry)) 
-            table)
-       (filter identity)
-       set))
+(defn on-value 
+  ([f table]
+   (->> (seq table)
+        (map (keys-on-fn (maybe-set f)))
+        (map (fn [entry ks]
+               (when (seq ks) entry)) 
+             table)
+        (filter identity)
+        set))
+  ([key f table]
+   (clojure.set/select (comp (maybe-set f) key) table)))
 
-(comment
-  ((partial-enum :a.b) :a/a.b)
-
-
-)

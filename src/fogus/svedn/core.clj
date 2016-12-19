@@ -23,7 +23,6 @@
 
 (defn ^:private entityify [conformers thing]
   (reduce (fn [entity [key confrm]]
-            (println [key confrm])
             (if-let [val (get entity key)]
               (update-in entity [key] #(s/conform confrm %))
               (dissoc entity key)))
@@ -100,10 +99,12 @@
              {:game/category   specs/enumeration
               :published/year  specs/numeric
               :bgg/id          specs/numeric
+              :meta/note       string?
               :game/tag        (specs/one-or-more specs/enumeration)
               :game/designer   (specs/required (specs/one-or-more string?))})
        ;;(query/on-value (query/partial-enum :helicopter))
-       (query/on-value #(= % "Quantum"))
+       ;;(query/on-value #(= % "Quantum"))
+       (query/on-value :game/tag #(= % :game/genre.economic))
        ;;(query/on-value #(= % :clojure.spec/invalid))
   )
 )
