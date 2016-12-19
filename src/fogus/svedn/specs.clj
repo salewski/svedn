@@ -44,9 +44,3 @@
                    (if (and (not= :clojure.spec/invalid val) (empty? val))
                      :clojure.spec/invalid
                      val)))))
-
-(comment
-
-
-  (s/conform (numeric-of float?) 2.1)
-)

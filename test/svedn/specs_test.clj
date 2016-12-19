@@ -11,7 +11,17 @@
   (is (= :clojure.spec/invalid
          (s/conform specs/enumeration ":a"))))
 
+(deftest test-numeric-of
+  ""
+  (is (= 2.1
+         (s/conform (specs/numeric-of float?) 2.1)))
 
+
+  (is (= 1.2
+         (s/conform (specs/numeric-of float?) "1.2")))
+
+  (is (= :clojure.spec/invalid
+         (s/conform (specs/numeric-of float?) "a"))))
 
 (deftest test-set-of
   ""

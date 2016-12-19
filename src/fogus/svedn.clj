@@ -86,7 +86,6 @@
        ;;(query/on-value #(= % :clojure.spec/invalid))
   )
 
-
   (s/conform specs/enumeration :a/b)
 
   (s/conform number? 10)
