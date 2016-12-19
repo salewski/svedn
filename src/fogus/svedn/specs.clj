@@ -46,9 +46,7 @@
                      val)))))
 
 (comment
-  (s/conform enumeration ":a.c/b")
 
-  (s/conform (s/or :int int? :ratio ratio?) 1/2)
 
   (s/conform (numeric-of float?) 2.1)
 )

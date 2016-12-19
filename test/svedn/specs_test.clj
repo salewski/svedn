@@ -3,6 +3,16 @@
             [fogus.svedn.specs :as specs]
             [clojure.spec :as s]))
 
+(deftest test-enumeration
+  ""
+  (is (= :a.c/b
+         (s/conform specs/enumeration ":a.c/b")))
+
+  (is (= :clojure.spec/invalid
+         (s/conform specs/enumeration ":a"))))
+
+
+
 (deftest test-set-of
   ""
   (is (= #{[:integer 1] [:key :a] [:integer 4] [:key :b]}
@@ -27,3 +37,4 @@
 
   (is (= #{"a"}
          (s/conform (spec/required (specs/set-of string?)) "#{\"a\"}"))))
+
