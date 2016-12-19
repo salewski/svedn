@@ -1,4 +1,4 @@
-(ns fogus.svedn.core
+(ns fogus.svedn
   (:require [fogus.svedn.q     :as query]
             [fogus.svedn.specs :as specs]
             [clojure.data.csv  :as csv]
