@@ -1,4 +1,5 @@
-(ns fogus.svedn.q)
+(ns fogus.svedn.q
+  (:require clojure.set))
 
 (defn has-multiple [key table]
   (clojure.set/select (fn [entity] 
