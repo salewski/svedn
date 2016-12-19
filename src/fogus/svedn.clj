@@ -86,9 +86,6 @@
        ;;(query/on-value #(= % :clojure.spec/invalid))
   )
 
-  (s/conform (specs/one-or-more (s/or :key keyword? :integer int?)) "#{:a 1 :b 4}")
-
-  (s/conform (specs/one-or-more specs/enumeration?) "#{:a/b :b/c}")
 
   (s/conform specs/enumeration :a/b)
 

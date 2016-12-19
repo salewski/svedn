@@ -13,7 +13,7 @@
           #{str}
           #{val})))))
 
-(defmacro one-or-more [typer]
+(defmacro set-of [typer]
   `(s/conformer (fn [raw#]
                   (let [things# (parse-one-or-many raw#)
                         cspec#  (s/coll-of ~typer :kind set?)]
@@ -48,7 +48,7 @@
 (comment
   (parse-one-or-many "a")
 
-  (s/conform (required (one-or-more string?)) "#{}")
+  (s/conform (required (set-of string?)) "#{}")
 
   (s/conform enumeration ":a.c/b")
 
