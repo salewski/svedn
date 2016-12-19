@@ -102,9 +102,9 @@
               :meta/note       string?
               :game/tag        (specs/one-or-more specs/enumeration)
               :game/designer   (specs/required (specs/one-or-more string?))})
-       ;;(query/on-value (query/partial-enum :helicopter))
-       ;;(query/on-value #(= % "Quantum"))
-       (query/on-value :game/tag #(= % :game/genre.economic))
-       ;;(query/on-value #(= % :clojure.spec/invalid))
+       ;;(query/on-value (query/partial-enum :post-euro))
+       ;;(query/on-value #(= % "Five Tribes"))
+       ;;(query/on-value :game/tag #(= % :tag/euro-abstract))
+       (query/on-value #(= % :clojure.spec/invalid))
   )
 )
