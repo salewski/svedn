@@ -43,8 +43,8 @@
 (deftest test-required
   ""
   (is (= :clojure.spec/invalid
-         (s/conform (spec/required (specs/set-of string?)) "#{}")))
+         (s/conform (specs/required (specs/set-of string?)) "#{}")))
 
   (is (= #{"a"}
-         (s/conform (spec/required (specs/set-of string?)) "#{\"a\"}"))))
+         (s/conform (specs/required (specs/set-of string?)) "#{\"a\"}"))))
 
