@@ -26,6 +26,14 @@ The reason for this library is twofold:
  2. This is also an experiment in using clojure.core.spec to aide in
     parsing.
 
+## More
+
+I'd like to add the following:
+
+ - Ammendments: Columns that work to add additional fields to an entity. This would be a map.
+
+ - Metadata: Columns that serve as metadata for an entity.
+
 ## Thanks
 
 Thanks to David Chelimsky for deivising the name Svedn.
