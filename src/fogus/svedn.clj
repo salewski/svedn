@@ -1,11 +1,11 @@
 (ns fogus.svedn
-  (:require [fogus.svedn.q     :as query]
-            [fogus.svedn.specs :as specs]
-            [clojure.data.csv  :as csv]
-            [clojure.java.io   :as io]
-            [clojure.edn       :as edn]
-            [clojure.string    :as string]
-            [clojure.spec      :as s])
+  (:require [fogus.svedn.q          :as query]
+            [fogus.svedn.conformers :as c]
+            [clojure.data.csv       :as csv]
+            [clojure.java.io        :as io]
+            [clojure.edn            :as edn]
+            [clojure.string         :as string]
+            [clojure.spec           :as s])
   (:refer-clojure :exclude [read]))
 
 (defprotocol SvednReadn
@@ -69,38 +69,34 @@
 
   (->> (read "./samples/books.csv"
              :conformers          
-             {:book/genre      specs/enumeration
-              :personal/rating specs/numeric
-              :personal/genre  specs/enumeration
-              :book/author     (specs/one-or-more string?)})
+             {:book/genre      c/enumeration
+              :personal/rating c/numeric
+              :personal/genre  c/enumeration
+              :book/author     (c/set-of string?)})
        (query/has-multiple :book/author))
 
   (->> (read "./samples/books.csv"
              :conformers          
-             {:book/genre      specs/enumeration
-              :personal/rating specs/numeric
-              :personal/genre  specs/enumeration
-              :book/author     (specs/required (specs/one-or-more string?))})
+             {:book/genre      c/enumeration
+              :personal/rating c/numeric
+              :personal/genre  c/enumeration
+              :book/author     (c/required (c/set-of string?))})
        (query/on-value (query/partial-enum :fiction.philosophy))
        ;;(query/on-value #(= % "Grendel"))
        ;;(query/on-value #(= % :clojure.spec/invalid))
   )
 
-  (s/conform specs/enumeration :a/b)
-
-  (s/conform number? 10)
-
   (->> (read "./samples/euros.csv"
              :conformers          
-             {:game/category   specs/enumeration
-              :published/year  specs/numeric
-              :bgg/id          specs/numeric
+             {:game/category   c/enumeration
+              :published/year  c/numeric
+              :bgg/id          c/numeric
               :meta/note       string?
-              :game/tag        (specs/one-or-more specs/enumeration)
-              :game/designer   (specs/required (specs/one-or-more string?))})
+              :game/tag        (c/set-of c/enumeration)
+              :game/designer   (c/required (c/set-of string?))})
        ;;(query/on-value (query/partial-enum :post-euro))
        ;;(query/on-value #(= % "Five Tribes"))
-       ;;(query/on-value :game/tag #(= % :tag/euro-abstract))
-       (query/on-value #(= % :clojure.spec/invalid))
+       (query/on-value :game/tag #(= % :tag/euro-abstract))
+       ;;(query/on-value #(= % :clojure.spec/invalid))
   )
-)
+) 

@@ -1,4 +1,4 @@
-(ns fogus.svedn.specs
+(ns fogus.svedn.conformers
   (:require [clojure.string   :as string]
             [clojure.edn      :as edn]
             [clojure.spec     :as s]))
