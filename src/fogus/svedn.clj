@@ -57,6 +57,11 @@
 (def ^:private DEFAULT_OPTS {:header-transformer edn/read-string
                               :validator identity})
 
+(defn ^:private process-column [source data f]
+  (if data
+    (f source data)
+    source))
+
 (defn read [source & {:as opts}]
   (let [config (merge DEFAULT_OPTS opts)
         preproc (-> source
@@ -65,14 +70,15 @@
                      (:conformers config)
                      (:validator config)))
         whitelist (:whitelist opts)]
-    (set (map #(select-keys % whitelist) preproc))))
+    (->> preproc
+         (map (fn [entry]
+                (-> entry
+                    (select-keys whitelist)
+                    (process-column (get entry (:metadata opts)) #(with-meta %1 (edn/read-string %2)))
+                    (process-column (get entry (:amendments opts)) #(merge %1 (edn/read-string %2))))))
+         set)))
 
 (comment
-
-  (select-keys {:a 1 :b 2 :c 3} #{:a :b})
-
-
-
   (let [confs {:book/genre      c/enumeration
                :personal/rating c/numeric
                :personal/genre  c/enumeration
@@ -80,8 +86,11 @@
     
     (->> (read "./samples/books.csv"
                :conformers confs
-               :whitelist (-> confs keys set (conj :book/title)))
-      (query/has-multiple :book/author)
+               :whitelist  (-> confs keys set (conj :book/title))
+               :metadata   :book/meta
+               :amendments :book/amendments)
+;;      (query/has-multiple :book/author)
+      (query/on-value #(= % "Magister Ludi"))
       ))
 
   (->> (read "./samples/books.csv"
