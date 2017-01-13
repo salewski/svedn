@@ -58,22 +58,31 @@
                               :validator identity})
 
 (defn read [source & {:as opts}]
-  (let [config (merge DEFAULT_OPTS opts)]
-    (-> source
-        (-read-svedn 
-         (:header-transformer config)
-         (:conformers config)
-         (:validator config)))))
+  (let [config (merge DEFAULT_OPTS opts)
+        preproc (-> source
+                    (-read-svedn 
+                     (:header-transformer config)
+                     (:conformers config)
+                     (:validator config)))
+        whitelist (:whitelist opts)]
+    (set (map #(select-keys % whitelist) preproc))))
 
 (comment
 
-  (->> (read "./samples/books.csv"
-             :conformers          
-             {:book/genre      c/enumeration
-              :personal/rating c/numeric
-              :personal/genre  c/enumeration
-              :book/author     (c/set-of string?)})
-       (query/has-multiple :book/author))
+  (select-keys {:a 1 :b 2 :c 3} #{:a :b})
+
+
+
+  (let [confs {:book/genre      c/enumeration
+               :personal/rating c/numeric
+               :personal/genre  c/enumeration
+               :book/author     (c/set-of string?)}]
+    
+    (->> (read "./samples/books.csv"
+               :conformers confs
+               :whitelist (-> confs keys set (conj :book/title)))
+      (query/has-multiple :book/author)
+      ))
 
   (->> (read "./samples/books.csv"
              :conformers          
