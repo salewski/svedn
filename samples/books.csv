@@ -1,27 +1,27 @@
-:book/title,:book/genre,:personal/rating,:personal/genre,:book/author
-House of Leaves,:book.genre/fiction.horror,10,,Mark Z. Danielewski
-The Glass Bead Game,:book.genre/fiction.philosophy,10,,Hermann Hesse
-Grendel,:book.genre/fiction,10,,
-LISP 1.5 Programmer's Manual,:book.genre/non-fiction.programming,10,,"#{""John McCarthy"", ""Paul W. Abrahams"", ""Daniel J. Edwards"", ""Timothy P. Hart"",  ""Michael I. Levin""}"
-Transmetropolitan,:book.genre/fiction.graphic-novel,9.5,,Warren Ellis
-Things Fall Apart,:book.genre/fiction.philosophy,9.8,,Chinua Achebe
-The Remains of the Day,:book.genre/fiction.philosophy,9.8,,Kazuo Ishiguro
-Catch-22,:book.genre/fiction.humor,10,,Joseph Heller
-The Code of the Woosters,:book.genre/fiction.humor,9.6,,P.G. Wodehouse
-"The Universal Baseball Association, Inc., J. Henry Waugh, Prop.",:book.genre/fiction,9.4,,Robert Coover
-Infinite Jest,:book.genre/fiction,9.9,:genre/found-drama,David Foster Wallace
-Ægypt,:book.genre/fiction,9.5,:genre/found-drama,John Crowley
-The Machinery of Life,:book.genre/non-fiction.biology,9.3,:genre/non-tech-tech,David S. Goodsell
-How Buildings Learn: What Happens After They're Built,:book.genre/non-fiction.architecture,9.6,:genre/non-tech-tech,Stewart Brand
-Programmer's Guide to the 1802,:book.genre/non-fiction.programming,9.3,:genre/tech.influential,Tom Swan
-Chthon,:book.genre/non-fiction.scifi,9.2,,Piers Anthony
-The Jacket,:book.genre/non-fiction.scifi,9.2,,Jack London
-Ulysses,:book.genre/fiction,9.1,,James Joyce
-After Dark,:book.genre/fiction,9.1,,Haruki Murakami
-The Rings of Saturn,:book.genre/fiction,9.2,:genre/found-drama,W. G. Sebald
-The Picture of Dorian Gray,:book.genre/fiction,9,,Oscar Wilde
-Commodore 64 User's Guide,:book.genre/non-fiction.programming,9.1,,
-"Funk and Wagnell's Folklore, Mythology, and Legend",:book.genre/non-fiction.folklore,9.4,,
-Labyrinths: Selected Stories and Other Writings,:book.genre/fiction.short-stories,9.1,,Jorge Luis Borges
-Thinking Forth,:book.genre/non-fiction.programming,9,:genre/tech.influential,Leo Brodie
-The Soul of a New Machine,:book.genre/non-fiction.programming,9,:genre/non-tech-tech,Tracy Kidder
+:book/title,:book/genre,:personal/rating,:personal/genre,:book/author,:book/meta,:book/amendments
+House of Leaves,:book.genre/fiction.horror,10,,Mark Z. Danielewski,"{:amazon/asin ""0375420525""}",
+The Glass Bead Game,:book.genre/fiction.philosophy,10,,Hermann Hesse,,"{:book/title ""Magister Ludi""}"
+Grendel,:book.genre/fiction,10,,John Gardner,,
+LISP 1.5 Programmer's Manual,:book.genre/non-fiction.programming,10,,"#{""John McCarthy"", ""Paul W. Abrahams"", ""Daniel J. Edwards"", ""Timothy P. Hart"",  ""Michael I. Levin""}",,
+Transmetropolitan,:book.genre/fiction.graphic-novel,9.5,,Warren Ellis,,
+Things Fall Apart,:book.genre/fiction.philosophy,9.8,,Chinua Achebe,,
+The Remains of the Day,:book.genre/fiction.philosophy,9.8,,Kazuo Ishiguro,,
+Catch-22,:book.genre/fiction.humor,10,,Joseph Heller,,
+The Code of the Woosters,:book.genre/fiction.humor,9.6,,P.G. Wodehouse,,
+"The Universal Baseball Association, Inc., J. Henry Waugh, Prop.",:book.genre/fiction,9.4,,Robert Coover,,
+Infinite Jest,:book.genre/fiction,9.9,:genre/found-drama,David Foster Wallace,,
+Ægypt,:book.genre/fiction,9.5,:genre/found-drama,John Crowley,,
+The Machinery of Life,:book.genre/non-fiction.biology,9.3,:genre/non-tech-tech,David S. Goodsell,,
+How Buildings Learn: What Happens After They're Built,:book.genre/non-fiction.architecture,9.6,:genre/non-tech-tech,Stewart Brand,,
+Programmer's Guide to the 1802,:book.genre/non-fiction.programming,9.3,:genre/tech.influential,Tom Swan,,
+Chthon,:book.genre/non-fiction.scifi,9.2,,Piers Anthony,,
+The Jacket,:book.genre/non-fiction.scifi,9.2,,Jack London,"{:read/date #inst ""2012-12-10""}",
+Ulysses,:book.genre/fiction,9.1,,James Joyce,,
+After Dark,:book.genre/fiction,9.1,,Haruki Murakami,,
+The Rings of Saturn,:book.genre/fiction,9.2,:genre/found-drama,W. G. Sebald,,
+The Picture of Dorian Gray,:book.genre/fiction,9,,Oscar Wilde,,
+Commodore 64 User's Guide,:book.genre/non-fiction.programming,9.1,,,,
+"Funk and Wagnell's Folklore, Mythology, and Legend",:book.genre/non-fiction.folklore,9.4,,,,
+Labyrinths: Selected Stories and Other Writings,:book.genre/fiction.short-stories,9.1,,Jorge Luis Borges,,
+Thinking Forth,:book.genre/non-fiction.programming,9,:genre/tech.influential,Leo Brodie,,
+The Soul of a New Machine,:book.genre/non-fiction.programming,9,:genre/non-tech-tech,Tracy Kidder,,

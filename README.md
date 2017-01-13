@@ -30,6 +30,8 @@ The reason for this library is twofold:
 
 I'd like to add the following:
 
+ - White List: Columns to add to the parsed data set.
+
  - Ammendments: Columns that work to add additional fields to an entity. This would be a map.
 
  - Metadata: Columns that serve as metadata for an entity.
