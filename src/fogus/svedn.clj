@@ -72,10 +72,13 @@
         whitelist (:whitelist opts)]
     (->> preproc
          (map (fn [entry]
-                (-> entry
-                    (select-keys whitelist)
-                    (process-column (get entry (:metadata opts)) #(with-meta %1 (edn/read-string %2)))
-                    (process-column (get entry (:amendments opts)) #(merge %1 (edn/read-string %2))))))
+                (let [filtered (select-keys entry whitelist)]
+                  (if (seq filtered)
+                    (-> filtered
+                        (process-column (get entry (:metadata opts)) #(with-meta %1 (edn/read-string %2)))
+                        (process-column (get entry (:amendments opts)) #(merge %1 (edn/read-string %2))))
+                    nil))))
+         (keep identity)
          set)))
 
 (comment
