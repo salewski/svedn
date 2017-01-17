@@ -57,5 +57,5 @@
                          :metadata   :book/meta
                          :amendments :book/amendments)]
     (is (not= #{} (query/on-value #(= % "Magister Ludi") data)))
-    (is (not= #{} (query/on-value #(= % "The Glass Bead Game") data)))))
+    (is (= #{} (query/on-value #(= % "The Glass Bead Game") data)))))
 
