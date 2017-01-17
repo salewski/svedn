@@ -38,5 +38,15 @@
     (is (absolutely-every? number?  (vals-for :personal/rating data)))
     (is (absolutely-every? keyword? (vals-for :personal/genre  data)))
     (is (absolutely-every? keyword? (vals-for :book/genre      data)))
-    (is (absolutely-every? set?     (vals-for :book/author     data)))))
+    (is (absolutely-every? set?     (vals-for :book/author     data)))
+    ;; Search on a column that wasn't conformed
+    (is (= #{} (query/on-value :book/title #(= % "House of Leaves") data)))))
+
+(deftest test-metadata
+  (let [data (svedn/read "./samples/books.csv"
+                         :conformers CONF
+                         :whitelist  (-> CONF keys set (conj :book/title))
+                         :metadata   :book/meta)
+        hol (query/on-value #(= % "House of Leaves") data)]
+    (is (contains? (meta (first hol)) :amazon/asin))))
 
