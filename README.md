@@ -30,13 +30,13 @@ The reason for this library is twofold:
 
 I'd like to add the following:
 
- - Ammendments: Columns that work to add additional fields to an entity. This would be a map.
+ - Ammendments: Also accept a map instead of a column key
 
- - Metadata: Columns that serve as metadata for an entity.
+ - Metadata: Also accept a map instead of a column key
 
 ## Thanks
 
-Thanks to David Chelimsky for deivising the name Svedn.
+Thanks to David Chelimsky for creating the name Svedn.
 
 ## License
 
