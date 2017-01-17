@@ -30,6 +30,8 @@ The reason for this library is twofold:
 
 I'd like to add the following:
 
+ - Refactor the metadata / amendments handling code
+
  - Ammendments: Also accept a map instead of a column key
 
  - Metadata: Also accept a map instead of a column key
