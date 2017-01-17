@@ -50,3 +50,12 @@
         hol (query/on-value #(= % "House of Leaves") data)]
     (is (contains? (meta (first hol)) :amazon/asin))))
 
+(deftest test-amendments
+  (let [data (svedn/read "./samples/books.csv"
+                         :conformers CONF
+                         :whitelist  (-> CONF keys set (conj :book/title))
+                         :metadata   :book/meta
+                         :amendments :book/amendments)]
+    (is (not= #{} (query/on-value #(= % "Magister Ludi") data)))
+    (is (not= #{} (query/on-value #(= % "The Glass Bead Game") data)))))
+
