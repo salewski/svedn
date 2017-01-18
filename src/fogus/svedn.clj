@@ -73,11 +73,12 @@
     (->> preproc
          (map (fn [entry]
                 (let [filtered (select-keys entry whitelist)
-                      ]  ;; TODO: refactor to fnil
+                      proc-meta (fnil with-meta filtered filtered)
+                      proc-amendments (fnil merge filtered filtered)]
                   (if (seq filtered)
                     (-> filtered
-                        (process-column (get entry (:metadata opts)) #(with-meta %1 (edn/read-string %2)))
-                        (process-column (get entry (:amendments opts)) #(merge %1 (edn/read-string %2))))
+                        (proc-meta (edn/read-string (get entry (:metadata opts) "nil")))
+                        (proc-amendments (edn/read-string (get entry (:amendments opts) "nil"))))
                     nil))))
          (keep identity)
          set)))
