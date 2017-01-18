@@ -72,7 +72,8 @@
         whitelist (:whitelist opts)]
     (->> preproc
          (map (fn [entry]
-                (let [filtered (select-keys entry whitelist)]
+                (let [filtered (select-keys entry whitelist)
+                      ]  ;; TODO: refactor to fnil
                   (if (seq filtered)
                     (-> filtered
                         (process-column (get entry (:metadata opts)) #(with-meta %1 (edn/read-string %2)))
