@@ -55,12 +55,17 @@
     (-read-svedn-impl header-fn conformers validator (-read-repr source))))
 
 (def ^:private DEFAULT_OPTS {:header-transformer edn/read-string
-                              :validator identity})
+                             :validator identity})
 
-(defn ^:private process-column [source data f]
-  (if data
-    (f source data)
-    source))
+(defn ^:private process-entity [entity whitelist opts]
+  (let [filtered (select-keys entity whitelist)
+        proc-meta (fnil with-meta filtered filtered)
+        proc-amendments (fnil merge filtered filtered)]
+    (if (seq filtered)
+      (-> filtered
+          (proc-meta (edn/read-string (get entity (:metadata opts) "nil")))
+          (proc-amendments (edn/read-string (get entity (:amendments opts) "nil"))))
+      nil)))
 
 (defn read [source & {:as opts}]
   (let [config (merge DEFAULT_OPTS opts)
@@ -68,18 +73,9 @@
                     (-read-svedn 
                      (:header-transformer config)
                      (:conformers config)
-                     (:validator config)))
-        whitelist (:whitelist opts)]
+                     (:validator config)))]
     (->> preproc
-         (map (fn [entry]
-                (let [filtered (select-keys entry whitelist)
-                      proc-meta (fnil with-meta filtered filtered)
-                      proc-amendments (fnil merge filtered filtered)]
-                  (if (seq filtered)
-                    (-> filtered
-                        (proc-meta (edn/read-string (get entry (:metadata opts) "nil")))
-                        (proc-amendments (edn/read-string (get entry (:amendments opts) "nil"))))
-                    nil))))
+         (map #(process-entity % (:whitelist opts) opts))
          (keep identity)
          set)))
 
