@@ -1,4 +1,4 @@
-(ns svedn.specs-test
+(ns svedn.conformers-test
   (:require [clojure.test :refer :all]
             [fogus.svedn.conformers :as c]
             [clojure.spec :as s]))
