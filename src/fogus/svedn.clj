@@ -91,34 +91,6 @@
              :conformers confs
              :whitelist  (-> confs keys set (conj :book/title))
              :metadata   :book/meta
-             :amendments :book/amendments)
-       ;;      (query/has-multiple :book/author)
-       (query/on-value #(= % "Magister Ludi"))
-       )
-
-  (->> (read "./samples/books.csv"
-             :conformers          
-             {:book/genre      c/enumeration
-              :personal/rating c/numeric
-              :personal/genre  c/enumeration
-              :book/author     (c/required (c/set-of string?))}
-            :whitelist  (-> confs keys set (conj :book/title)))
-       (query/on-value (query/partial-enum :fiction.philosophy))
-       ;;(query/on-value #(= % "Grendel"))
-       ;;(query/on-value #(= % :clojure.spec/invalid))
-  )
-
-  (->> (read "./samples/euros.csv"
-             :conformers          
-             {:game/category   c/enumeration
-              :published/year  c/numeric
-              :bgg/id          c/numeric
-              :meta/note       string?
-              :game/tag        (c/set-of c/enumeration)
-              :game/designer   (c/required (c/set-of string?))})
-       ;;(query/on-value (query/partial-enum :post-euro))
-       ;;(query/on-value #(= % "Five Tribes"))
-       (query/on-value :game/tag #(= % :tag/euro-abstract))
-       ;;(query/on-value #(= % :clojure.spec/invalid))
-  )
+             :amendments :book/amendments)    
+       (query/on-value #(= % "Magister Ludi")))
 ) 

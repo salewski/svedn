@@ -35,3 +35,11 @@
     (is (f-philos? :fiction.philosophy/slice-of-life))
     (is (f-philos? :fiction.philosophy))
     (is (not (philos? :fiction.found-drama)))))
+
+(deftest test-has-multiple
+  (let [data (svedn/read "./samples/books.csv"
+                         :conformers CONF
+                         :whitelist  (-> CONF keys set (conj :book/title))
+                         :metadata   :book/meta
+                         :amendments :book/amendments)]
+    (is (query/has-multiple :book/author data))))
