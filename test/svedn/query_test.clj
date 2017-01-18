@@ -42,4 +42,5 @@
                          :whitelist  (-> CONF keys set (conj :book/title))
                          :metadata   :book/meta
                          :amendments :book/amendments)]
-    (is (query/has-multiple :book/author data))))
+    (is (not= #{} (query/has-multiple :book/author data)))
+    (is (= #{} (query/has-multiple :book/genre data)))))
