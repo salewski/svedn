@@ -5,7 +5,8 @@
             [clojure.java.io        :as io]
             [clojure.edn            :as edn]
             [clojure.string         :as string]
-            [clojure.spec           :as s])
+            [clojure.spec           :as s]
+            fogus.svedn.specs)
   (:refer-clojure :exclude [read]))
 
 (defprotocol SvednReadn
@@ -68,16 +69,18 @@
       nil)))
 
 (defn read [source & {:as opts}]
-  (let [config (merge DEFAULT_OPTS opts)
-        preproc (-> source
-                    (-read-svedn 
-                     (:header-transformer config)
-                     (:conformers config)
-                     (:validator config)))]
-    (->> preproc
-         (map #(process-entity % (:whitelist opts) opts))
-         (keep identity)
-         set)))
+  (if (not (s/valid? :fogus.svedn.specs/svedn-opts opts))
+    (println :======> (s/explain-data :fogus.svedn.specs/svedn-opts opts))
+    (let [config (merge DEFAULT_OPTS opts)       
+          preproc (-> source
+                      (-read-svedn 
+                       (:header-transformer config)
+                       (:conformers config)
+                       (:validator config)))]
+      (->> preproc
+           (map #(process-entity % (:whitelist opts) opts))
+           (keep identity)
+           set))))
 
 (comment
   (def confs {:book/genre      c/enumeration

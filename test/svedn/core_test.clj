@@ -17,7 +17,7 @@
            :book/author     (c/set-of string?)})
 
 (deftest test-whitelist
-  (let [data0 (svedn/read "./samples/books.csv")
+  (let [data0 (svedn/read "./samples/books.csv" :conformers CONF)
         data1 (svedn/read "./samples/books.csv"
                           :conformers CONF
                           :whitelist  #{:book/author})
