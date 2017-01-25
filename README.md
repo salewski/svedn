@@ -30,6 +30,8 @@ The reason for this library is twofold:
 
 I'd like to add the following:
 
+ - Inst conformer
+
  - Explode / Implode (to/from tuples)
 
  - Ammendments: Also accept a map instead of a column key
