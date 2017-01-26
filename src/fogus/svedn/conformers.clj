@@ -41,15 +41,9 @@
 
 (defmacro date-of [pattern]
   `(s/conformer (fn [raw#]
-                  (let [df# (java.text.SimpleDateFormat. ~pattern)
+                  (let [df# (doto (java.text.SimpleDateFormat. ~pattern) (.setLenient false)) 
                         t#  (.parse df# raw#)]
                     (s/conform inst? t#)))))
-
-(comment
-  (def dt (date-of "mm/dd/yyyy"))
-
-  (s/valid? dt "1/25/2017")
-)
 
 (defn required [conf]
   (s/conformer (fn [thing]

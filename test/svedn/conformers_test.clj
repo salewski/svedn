@@ -16,12 +16,17 @@
   (is (= 2.1
          (s/conform (c/numeric-of float?) 2.1)))
 
-
   (is (= 1.2
          (s/conform (c/numeric-of float?) "1.2")))
 
   (is (= :clojure.spec/invalid
          (s/conform (c/numeric-of float?) "a"))))
+
+(deftest test-date-of
+  (let [dt (c/date-of "mm/dd/yyyy")]
+    (is (s/valid? dt "1/25/2017"))
+    (is (s/valid? dt "01/25/2017"))
+    (is (thrown? java.text.ParseException (s/conform dt "2017/01/25")))))
 
 (deftest test-set-of
   ""
