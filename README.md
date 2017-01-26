@@ -30,13 +30,13 @@ The reason for this library is twofold:
 
 I'd like to add the following:
 
- - Inst conformer
-
  - Explode / Implode (to/from tuples)
 
- - Ammendments: Also accept a map instead of a column key
+ - Save table out to EDN (pp?)
 
- - Metadata: Also accept a map instead of a column key
+ - Ammendments: Also accept a map instead of a column key?
+
+ - Metadata: Also accept a map instead of a column key?
 
 ## Thanks
 

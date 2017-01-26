@@ -1,7 +1,8 @@
 (ns fogus.svedn.conformers
   (:require [clojure.string   :as string]
             [clojure.edn      :as edn]
-            [clojure.spec     :as s]))
+            [clojure.spec     :as s]
+            [clojure.instant  :as inst]))
 
 (defn parse-one-or-many [raw]
   (if (string? raw)
@@ -38,9 +39,22 @@
                  (let [thing (if (string? raw) (edn/read-string raw) raw)]
                    (s/conform number? thing)))))
 
+(defmacro date-of [pattern]
+  `(s/conformer (fn [raw#]
+                  (let [df# (java.text.SimpleDateFormat. ~pattern)
+                        t#  (.parse df# raw#)]
+                    (s/conform inst? t#)))))
+
+(comment
+  (def dt (date-of "mm/dd/yyyy"))
+
+  (s/valid? dt "1/25/2017")
+)
+
 (defn required [conf]
   (s/conformer (fn [thing]
                  (let [val (s/conform conf thing)]
                    (if (and (not= :clojure.spec/invalid val) (empty? val))
                      :clojure.spec/invalid
                      val)))))
+
