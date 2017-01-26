@@ -70,7 +70,10 @@
 
 (defn read [source & {:as opts}]
   (if (not (s/valid? :fogus.svedn.specs/svedn-opts opts))
-    (println :======> (s/explain-data :fogus.svedn.specs/svedn-opts opts))
+    (throw (ex-info "Improper options." 
+                    {:explaination-map (s/explain-data :fogus.svedn.specs/svedn-opts opts)
+                     :explaination-str (s/explain-str :fogus.svedn.specs/svedn-opts opts)
+                     :opts opts}))
     (let [config (merge DEFAULT_OPTS opts)       
           preproc (-> source
                       (-read-svedn 

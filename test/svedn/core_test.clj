@@ -17,14 +17,13 @@
            :book/author     (c/set-of string?)})
 
 (deftest test-whitelist
-  (let [data0 (svedn/read "./samples/books.csv" :conformers CONF)
-        data1 (svedn/read "./samples/books.csv"
+  (let [data1 (svedn/read "./samples/books.csv"
                           :conformers CONF
                           :whitelist  #{:book/author})
         data (svedn/read "./samples/books.csv"
                          :conformers CONF
                          :whitelist  (set (keys CONF)))]
-    (is (empty? data0))
+    (is (thrown? clojure.lang.ExceptionInfo (svedn/read "./samples/books.csv" :conformers CONF)))
     (is (not (empty? data)))
     (is (= #{:book/author}
            (->> data1 (mapcat keys) set)))
