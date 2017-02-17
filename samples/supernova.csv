@@ -1,0 +1,36 @@
+:card/name,:card/phase,:card/population,:card/military,:card/diplomatic,:card/economic
+Battleship,Build,2,3,1,
+Cargo Ship,Build,2,1,2,3
+Colony Ship,Build,3,2,,2
+Consul Ship,Build,0,,4,
+Cruiser,Build,2,3,2,1
+Dreadnought PT1,Build,3,3,1,1
+Dreadnought PT2,Build,3,3,1,1
+Envoy Ship,Build,1,,3,1
+Evac Ship,Build,3,,1,1
+Factory Ship,Build,2,,,2
+Fighter,Build,0,3,,
+Garbage Scow,Build,1,,,1
+High-G ship,Build,1,2,2,2
+Long-Range Fighter,Build,1,1,,
+Long-Range Survey Ship,Build,1,1,2,2
+Luxury Yacht,Build,1,,2,3
+Merchant Ship,Build,2,,,3
+Mining Ship,Build,2,1,,2
+Relay Ship,Build,2,1,,1
+Science Vessel,Build,1,,,2
+Scout Ship,Build,1,1,,
+Tanker,Build,1,,,2
+Trading Ship,Build,2,2,2,2
+Transport Ship,Build,4,,,
+Booster Engines,Build,,1,,1
+Capt. Twothumbs,Build,,-1,-1,-1
+Capt. Yarnspinner,Build,,1,1,1
+Drop Pods,Build,,1,,
+Escape Pods,Build,,,,
+Laze Cannon,Build,,1,,
+Master-at-Arms,Build,,2,,
+Piracy License,Build,,,
+Ship Computer,Build,,,2,2
+Ships Shields,Build,,1,,
+Stealth Field,Build,,,,

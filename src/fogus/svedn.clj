@@ -97,4 +97,16 @@
              :metadata   :book/meta
              :amendments :book/amendments)    
        (query/on-value #(= % "Magister Ludi")))
+
+  (def confs {:card/name       string?
+              :card/phase      string?
+              :card/population c/numeric
+              :card/military   c/numeric
+              :card/diplomatic c/numeric
+              :card/economic   c/numeric})
+
+  (->> (read "./samples/supernova.csv"
+             :conformers confs
+             :whitelist  (-> confs keys set))
+       (query/on-value #(= % "Booster Engines")))
 ) 
