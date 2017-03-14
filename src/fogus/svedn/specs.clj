@@ -3,7 +3,7 @@
 
 (s/def ::conformers-map map?)
 (s/def ::conformers ::conformers-map)
-(s/def ::whitelist  (s/coll-of keyword? :distinct true :into #{}))
+(s/def ::whitelist  (s/coll-of (s/or :kw keyword? :num number?) :distinct true :into #{}))
 (s/def ::metadata keyword?)
 (s/def ::amendments keyword?)
 

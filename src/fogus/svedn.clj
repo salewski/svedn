@@ -109,4 +109,84 @@
              :conformers confs
              :whitelist  (-> confs keys set))
        (query/on-value #(= % "Booster Engines")))
-) 
+
+  (defn rank-merge [l r]
+    (+ l ))
+
+  (defn spit-html [filename table scores]
+    (let []
+      (spit filename "<html><head><meta charset=\"UTF-8\"><title>Friend Ranks</title></head><body>")
+
+      (spit filename "<table>" :append true)
+      (doseq [[game score] scores]
+        (spit filename "<tr>" :append true)
+        (spit filename "<td>" :append true)
+        (spit filename score :append true)
+        (spit filename "</td>" :append true)
+        (spit filename "<td>" :append true)
+        (spit filename game :append true)
+        (spit filename "</td>" :append true)
+        (spit filename "</tr>" :append true))
+      (spit filename "</table>" :append true)
+
+      (spit filename "</body></html>" :append true)))
+
+  (def table (read "./samples/ranks.csv"
+                   :conformers {}
+                   :whitelist  #{:person/name 1 2 3 4 5 6 7 8 9 10}))
+
+  (defn update-values [m f & args]
+    (reduce (fn [r [k v]] 
+              (assoc r k (apply f v args))) 
+            {} 
+            m))
+
+  (->> table
+       (map #(dissoc % :person/name))
+       (map clojure.set/map-invert)
+       (map (fn [m] (update-values m #(- 11 %))))
+       (apply merge-with +)
+       (#(dissoc % nil))
+       seq
+       (sort-by second >)
+       (spit-html "scores.html" table))
+
+)
+
+
+(comment
+(require '[clojure.set :as set])
+
+
+(def info
+  [{:a 1
+    :b 2}
+   {:a 1
+    :b 4}
+   {:a 4
+    :b 4}])
+
+
+(def db (reduce
+         (fn [db fact]
+           (merge-with into db
+                       (set/index [fact] [:entity])
+                       (set/index [fact] [:entity :attribute])
+                       (set/index [fact] [:entity :attribute :value])
+                       (set/index [fact] [:attribute])
+                       (set/index [fact] [:attribute :value])
+                       (set/index [fact] [:value])))
+         {}
+         (for [m info
+               :let [id (java.util.UUID/randomUUID)]
+               [k v] m]
+           {:entity id
+            :attribute k
+            :value v})))
+
+(for [{:keys [entity attribute value]} (get db {:attribute :a})
+      {v2 :value} (get db {:entity entity :attribute :b})
+      :when (= v2 value)]
+  (into {} (map (juxt :attribute :value) (get db {:entity entity}))))
+
+)
