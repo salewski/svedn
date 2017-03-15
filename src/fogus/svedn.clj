@@ -131,8 +131,10 @@
 
       (spit filename "</body></html>" :append true)))
 
+  (def C (s/conformer #(if (.startsWith % "18") "18xx" %)))
+
   (def table (read "./samples/ranks.csv"
-                   :conformers {}
+                   :conformers {1 C 2 C 3 C 4 C 5 C 6 C 7 C 8 C 9 C 10 C}
                    :whitelist  #{:person/name 1 2 3 4 5 6 7 8 9 10}))
 
   (defn update-values [m f & args]
