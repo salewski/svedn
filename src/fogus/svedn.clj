@@ -1,5 +1,5 @@
 (ns fogus.svedn
-  (:require [fogus.svedn.q          :as query]
+  (:require [fogus.tafl.q          :as query]
             [fogus.svedn.conformers :as c]
             [clojure.data.csv       :as csv]
             [clojure.java.io        :as io]
