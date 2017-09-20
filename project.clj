@@ -1,10 +1,10 @@
-(defproject fogus/svedn "0.1.0"
+(defproject fogus/svedn "0.2.0-SNAPSHOT"
   :description "Tools for working with CSV/EDN hybrid data."
   :url "http://www.github.com/fogus/svedn"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :dependencies [[org.clojure/clojure "1.9.0-alpha14"]
+  :dependencies [[org.clojure/clojure "1.9.0-beta1"]
                  [org.clojure/data.csv "0.1.3"]
                  [fogus/tafl "0.1.0"]]
 
