@@ -2,7 +2,8 @@
   (:require [clojure.string     :as string]
             [clojure.edn        :as edn]
             [clojure.spec.alpha :as s]
-            [clojure.instant    :as inst]))
+            [clojure.instant    :as inst]
+            clojure.set))
 
 (defn parse-one-or-many [raw]
   (if (string? raw)
@@ -14,11 +15,18 @@
           #{str}
           #{val})))))
 
-(defmacro set-of [typer]
-  `(s/conformer (fn [raw#]
-                  (let [things# (parse-one-or-many raw#)
-                        cspec#  (s/coll-of ~typer :kind set?)]
-                    (s/conform cspec# things#)))))
+(defn set-of [typer]
+  (s/conformer (fn [raw]
+                  (let [things (parse-one-or-many raw)
+                        cspec  (s/coll-of typer :kind set?)]
+                    (s/conform cspec things)))))
+
+(defn list-of [typer sep filt]
+    (s/conformer (fn [raw]
+                   (let [things (set (clojure.string/split raw sep))
+                         things (vec (map string/trim (clojure.set/select filt things)))
+                         cspec  (s/coll-of typer :kind vector?)]
+                     (s/conform cspec things)))))
 
 (def enumeration (s/conformer (fn [raw]
                                  (let [enum (if (string? raw) (edn/read-string raw) raw)
