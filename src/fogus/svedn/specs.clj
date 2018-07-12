@@ -1,5 +1,5 @@
 (ns fogus.svedn.specs
-  (:require [clojure.spec :as s]))
+  (:require [clojure.spec.alpha :as s]))
 
 (s/def ::conformers-map map?)
 (s/def ::conformers ::conformers-map)

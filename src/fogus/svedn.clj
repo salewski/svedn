@@ -5,7 +5,7 @@
             [clojure.java.io        :as io]
             [clojure.edn            :as edn]
             [clojure.string         :as string]
-            [clojure.spec           :as s]
+            [clojure.spec.alpha     :as s]
             fogus.svedn.specs)
   (:refer-clojure :exclude [read]))
 

@@ -1,7 +1,7 @@
 (ns svedn.conformers-test
   (:require [clojure.test :refer :all]
             [fogus.svedn.conformers :as c]
-            [clojure.spec :as s]))
+            [clojure.spec.alpha :as s]))
 
 (deftest test-enumeration
   ""

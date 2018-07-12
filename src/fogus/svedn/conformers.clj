@@ -1,8 +1,8 @@
 (ns fogus.svedn.conformers
-  (:require [clojure.string   :as string]
-            [clojure.edn      :as edn]
-            [clojure.spec     :as s]
-            [clojure.instant  :as inst]))
+  (:require [clojure.string     :as string]
+            [clojure.edn        :as edn]
+            [clojure.spec.alpha :as s]
+            [clojure.instant    :as inst]))
 
 (defn parse-one-or-many [raw]
   (if (string? raw)
